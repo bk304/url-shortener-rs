@@ -118,7 +118,7 @@ pub async fn get_original_url(
 pub async fn delete_url(
     State(data): State<Arc<AppState>>,
     Path(token): Path<String>
-) -> Result<Redirect, (StatusCode, Json<serde_json::Value>)> {
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     println!("Received request at /delete_short_url endpoint.");
     let result = sqlx::query!(
         r#"
@@ -126,13 +126,18 @@ pub async fn delete_url(
         "#,
         &token,
     )
-    .fetch_one(&data.db)
+    .execute(&data.db)
     .await
     .map_err(|e| e.to_string());
 
     match result {
         Ok(_) => {
-            Ok(Redirect::temporary("/"))
+
+            let success_response = json!({
+                "status": "success",
+                "message": "Short URL deleted successfully",
+            });
+            Ok((StatusCode::OK, Json(success_response)))
         }
         Err(err) => {
             let error_response = json!({
