@@ -6,7 +6,7 @@ A simple URL shortener REST API built with Rust, Axum, SQLx, and PostgreSQL.
 
 This project was created **for learning and demonstration purposes.** It serves as a practical exercise for exploring backend development, REST API design, SQL, PostgreSQL, asynchronous Rust, database migrations, connection pooling, and Docker.
 
-## What I'm Learning
+## What I'm learning
 
 This project is being used to experiment with and improve my understanding of:
 
@@ -20,6 +20,18 @@ This project is being used to experiment with and improve my understanding of:
 - Caching strategies and caching in backend services
 
 And perhaps I'll expand this list as I continue to improve this project.
+
+## What this does
+
+This project provides a simple URL shortening service through HTTP requests.
+
+It allows users to submit a URL and receive a shorter URL containing a unique identifier. When the shortened URL is accessed, the service looks up the corresponding original URL and redirects the user to it.
+
+The project is intentionally kept simple and is mainly used to experiment with backend concepts and explore different approaches as the implementation evolves.
+
+## Documentation
+
+See the [API documentation](API.md) for details about the available endpoints.
 
 ## Running locally
 
