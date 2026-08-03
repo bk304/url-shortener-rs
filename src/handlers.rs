@@ -1,4 +1,4 @@
-use std::{error, sync::Arc};
+use std::{sync::Arc};
 
 use axum::{Json, extract::{State, Path}, http::StatusCode, response::IntoResponse, response::Redirect};
 use serde_json::json;
@@ -6,27 +6,6 @@ use serde_json::json;
 use nanoid::nanoid;
 
 use crate::{AppState, model::UrlModel, schema::UrlSchema};
-
-pub async fn hellowworld(State(data): State<Arc<AppState>>) -> impl axum::response::IntoResponse {
-    println!("Received request at / endpoint.");
-    let json_response = json!({
-        "status": "ok",
-        "message": "Hello, World!"
-    });
-    axum::Json(json_response)
-}
-
-pub async fn hellotest(
-    State(data): State<Arc<AppState>>,
-    Path(test): Path<String>
-) -> impl axum::response::IntoResponse {
-    println!("Received request at /{{test}} (hellotest) endpoint.");
-    let json_response = json!({
-        "status": "ok",
-        "message": test
-    });
-    axum::Json(json_response)
-}
 
 pub async fn create_url(
     State(data): State<Arc<AppState>>,
