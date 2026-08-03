@@ -12,21 +12,26 @@ pub struct AppState {
     db: PgPool,
 }
 
+async fn create_pool(db_url: &str) -> Result<PgPool, sqlx::Error> {
+    let pool = postgres::PgPoolOptions::new()
+        .max_connections(5)
+        .connect(db_url)
+        .await?;
+
+    sqlx::migrate!().run(&pool).await?;
+
+    Ok(pool)
+}
+
 #[tokio::main]
 async fn main() {
     dotenv().expect("Failed to load .env file. Create a .env file in the root directory using the .env.example template.");
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    let pool = match postgres::PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&db_url)
-        .await
-    {
-        Ok(pool) => {
-            println!("Database connection established successfully.");
-            pool
-        }
-        Err(e) => {
-            eprintln!("Failed to connect to the database: {}", e);
+
+    let pool = match create_pool(&db_url).await {
+        Ok(pool) => pool,
+        Err(err) => {
+            eprintln!("Failed to create database pool: {}", err);
             std::process::exit(1);
         }
     };
