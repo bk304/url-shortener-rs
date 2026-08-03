@@ -1,0 +1,14 @@
+[package]
+name = "url-shortener-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.9"
+chrono = { version = "0.4.45", features = ["serde"] }
+dotenv = "0.15.0"
+nanoid = "0.5.0"
+serde = "1.0.229"
+serde_json = "1.0.151"
+sqlx = { version = "0.9.0", features = ["runtime-tokio", "postgres", "chrono"] }
+tokio = { version = "1.53.1", features = ["full"] }
