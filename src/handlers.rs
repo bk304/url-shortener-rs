@@ -1,6 +1,12 @@
-use std::{sync::Arc};
+use std::sync::Arc;
 
-use axum::{Json, extract::{State, Path}, http::StatusCode, response::IntoResponse, response::Redirect};
+use axum::{
+    Json,
+    extract::{Path, State},
+    http::StatusCode,
+    response::IntoResponse,
+    response::Redirect,
+};
 use serde_json::json;
 
 use nanoid::nanoid;
@@ -14,7 +20,6 @@ pub async fn create_url(
     println!("Received request at /create_short_url endpoint.");
     let mut token_lenght = 6;
     loop {
-
         if token_lenght > 10 {
             let error_response = json!({
                 "status": "error",
@@ -60,12 +65,12 @@ pub async fn create_url(
                 return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)));
             }
         }
-    };
+    }
 }
 
 pub async fn get_original_url(
     State(data): State<Arc<AppState>>,
-    Path(token): Path<String>
+    Path(token): Path<String>,
 ) -> Result<Redirect, (StatusCode, Json<serde_json::Value>)> {
     println!("Received request at /get_original_url endpoint.");
 
@@ -81,9 +86,7 @@ pub async fn get_original_url(
     .map_err(|e| e.to_string());
 
     match url {
-        Ok(url) => {
-            Ok(Redirect::temporary(&url.original_url))
-        }
+        Ok(url) => Ok(Redirect::temporary(&url.original_url)),
         Err(err) => {
             let error_response = json!({
                 "status": "error",
@@ -96,7 +99,7 @@ pub async fn get_original_url(
 
 pub async fn delete_url(
     State(data): State<Arc<AppState>>,
-    Path(token): Path<String>
+    Path(token): Path<String>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     println!("Received request at /delete_short_url endpoint.");
     let result = sqlx::query!(
@@ -111,7 +114,6 @@ pub async fn delete_url(
 
     match result {
         Ok(_) => {
-
             let success_response = json!({
                 "status": "success",
                 "message": "Short URL deleted successfully",
@@ -130,7 +132,7 @@ pub async fn delete_url(
 
 pub async fn get_info_url(
     State(data): State<Arc<AppState>>,
-    Path(token): Path<String>
+    Path(token): Path<String>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     println!("Received request at /get_info_url endpoint.");
 
@@ -165,4 +167,3 @@ pub async fn get_info_url(
         }
     }
 }
-

@@ -1,6 +1,9 @@
+use crate::{
+    AppState,
+    handlers::{create_url, delete_url, get_info_url, get_original_url},
+};
+use axum::{Router, routing::get, routing::post};
 use std::sync::Arc;
-use axum::{Router, routing::post, routing::get};
-use crate::{AppState, handlers::{create_url, get_original_url, delete_url, get_info_url}};
 
 pub fn create_router(app_state: Arc<AppState>) -> Router {
     Router::new()

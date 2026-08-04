@@ -1,10 +1,10 @@
 use dotenv::dotenv;
-use std::sync::Arc;
 use sqlx::{PgPool, postgres};
+use std::sync::Arc;
 
 mod handlers;
-mod route;
 mod model;
+mod route;
 mod schema;
 
 #[derive(Clone)]

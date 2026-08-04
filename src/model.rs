@@ -6,5 +6,3 @@ pub struct UrlModel {
     pub original_url: String,
     pub created_at: Option<chrono::DateTime<chrono::Utc>>,
 }
-
-
