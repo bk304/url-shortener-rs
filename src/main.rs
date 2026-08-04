@@ -25,7 +25,7 @@ async fn create_pool(db_url: &str) -> Result<PgPool, sqlx::Error> {
 
 #[tokio::main]
 async fn main() {
-    dotenv().expect("Failed to load .env file. Create a .env file in the root directory using the .env.example template.");
+    dotenv().ok();
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
     let pool = match create_pool(&db_url).await {
