@@ -14,14 +14,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container:
+      image: rust:latest
 
     steps:
     - uses: actions/checkout@v7
 
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        components: rustfmt, clippy
+    - name: Install Rust components
+      run: rustup component add rustfmt clippy
 
     - name: Run formatting check
       run: cargo fmt --all -- --check
